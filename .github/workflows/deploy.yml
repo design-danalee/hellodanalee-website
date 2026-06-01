@@ -16,7 +16,7 @@ jobs:
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: gad.vxv.mybluehost.me
-          username: ftp@gad.vxv.mybluehost.me
+          username: deploy@gad.vxv.mybluehost.me
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./
           server-dir: /public_html/
