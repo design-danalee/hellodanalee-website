@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact — Dana Lee</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=Schibsted+Grotesk&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="size-small.css">
+    <link rel="stylesheet" href="size-large.css">
+    <style>
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1.5px solid black;
+            padding: 0.75rem 0;
+            font-family: 'Schibsted Grotesk', sans-serif;
+            font-size: 1.2rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            border-bottom-color: lightseagreen;
+        }
+        .contact-form textarea {
+            resize: none;
+            min-height: 140px;
+        }
+        .contact-form input::placeholder,
+        .contact-form textarea::placeholder {
+            color: #aaa;
+        }
+        .submit-btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background-color: black;
+            color: white;
+            font-family: 'Schibsted Grotesk', sans-serif;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 2rem;
+            cursor: none;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .submit-btn:hover {
+            background-color: lightseagreen;
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900">
+    <main>
+        <header id="header" class="fixed top-0 left-0 w-screen bg-transparent transition-transform duration-300 p-4 px-4 z-10">
+            <nav class="flex justify-between items-center mx-auto space-x-4">
+                <div class="text-6xl">🍽️</div>
+                <ul class="flex space-x-4">
+                    <li><a href="index.html#about" class="nav-item">About</a></li>
+                    <li><a href="index.html#work" class="nav-item">Work</a></li>
+                    <li><a href="contact.html" class="nav-item">Contact</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- Hero -->
+        <section class="introduction">
+            <section class="flex">
+                <h1 class="hero-text">Let's make something good together.</h1>
+            </section>
+        </section>
+
+        <!-- Contact Form -->
+        <section class="grid grid-cols-6 gap-4 m-4 mb-16">
+            <div class="col-span-6 md:col-span-4 md:col-start-2 roundy p-12 bg-gray-50">
+                <!-- Success / error messages -->
+                <div id="form-status" class="mb-6 hidden rounded-2xl p-4 text-center text-lg"></div>
+
+                <form
+                    action="contact.php"
+                    method="POST"
+                    class="contact-form space-y-10"
+                >
+                    <div>
+                        <input
+                            type="text"
+                            name="name"
+                            placeholder="Your name"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="Your email"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <textarea
+                            name="message"
+                            placeholder="What's on your mind?"
+                            required
+                        ></textarea>
+                    </div>
+                    <div>
+                        <button type="submit" class="submit-btn">Send it</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <section id="footer" class="grid grid-cols-6 gap-4 m-4">
+            <a href="index.html" class="block col-span-6 md:col-span-3">
+                <section class="flex items-center justify-center roundy h-auto" id="more-work">
+                    <h2 class="text-4xl">Work</h2>
+                </section>
+            </a>
+            <a href="index.html" class="block col-span-6 md:col-span-3">
+                <section class="flex items-center justify-center roundy" id="about">
+                    <h2 class="text-4xl">About</h2>
+                </section>
+            </a>
+        </section>
+    </main>
+
+    <script src="dotcursor.js"></script>
+    <script src="random-colors.js"></script>
+    <script src="header.js"></script>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const status = params.get('status');
+        const el = document.getElementById('form-status');
+        if (status === 'success') {
+            el.textContent = "Message sent! I'll be in touch soon.";
+            el.style.backgroundColor = 'lightseagreen';
+            el.style.color = 'white';
+            el.classList.remove('hidden');
+        } else if (status === 'error') {
+            el.textContent = "Something went wrong. Try emailing me directly at danalee.seattle@gmail.com.";
+            el.style.backgroundColor = '#fee2e2';
+            el.style.color = '#991b1b';
+            el.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
