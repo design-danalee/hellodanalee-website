@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/danaann1/public_html/
+    - /bin/cp -R $DELIVERABLE_PATH/* $DEPLOYPATH
