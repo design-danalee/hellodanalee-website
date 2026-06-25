@@ -13,7 +13,7 @@ function getRandomColor() {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-    document.querySelector("#more-work").style.backgroundColor = getRandomColor();
-    document.querySelector("#about").style.backgroundColor = getRandomColor();
-    document.querySelector("#contact").style.backgroundColor = getRandomColor();
+    document.querySelectorAll("#more-work, #about, #contact").forEach((el) => {
+        el.style.backgroundColor = getRandomColor();
+    });
 });
