@@ -1,6 +1,8 @@
 
 let lastScroll = 0;
 const header = document.getElementById("header");
+const heroEl = document.querySelector(".wide-project-image, .introduction");
+const heroImageHeight = heroEl ? heroEl.offsetHeight : window.innerHeight;
 
 window.addEventListener("scroll", () => {
     let currentScroll = window.pageYOffset;
