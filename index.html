@@ -19,6 +19,33 @@
                 background-size: max(100vw, 180vh);
             }
         }
+        /* On mobile, anchor the hero text to the bottom of the screen with a 32px
+           gap. Use dvh (not vh) so the address bar can't push the last line off
+           the bottom and clip it. */
+        @media (max-width: 1024px) {
+            .introduction {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+                box-sizing: border-box;
+                height: auto;
+                min-height: 100dvh;
+                margin: 0 2rem 2rem;
+                padding: 0 0 2rem;
+            }
+        }
+        /* On mobile, make the case-study cards and the footer buttons square
+           (height matches their full width). */
+        @media (max-width: 767px) {
+            .case-study {
+                height: auto;
+                aspect-ratio: 1 / 1;
+            }
+            #more-work, #about, #contact {
+                height: auto;
+                aspect-ratio: 1 / 1;
+            }
+        }
     </style>
 </head>
 <body class="bg-white text-gray-900">
