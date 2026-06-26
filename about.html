@@ -30,7 +30,7 @@
         }
         .partner-tile {
             line-height: 1.45;
-            padding: 4rem;
+            padding: 5rem;
         }
         .partner-tile h3 {
             font-size: 2.25rem;
@@ -127,6 +127,19 @@
             </div>
         </section>
 
+        <!-- Other Data Points -->
+        <section class="m-4 mt-48 mb-4">
+            <h2 class="hero-text mb-10">Other Data Points</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="partner-tile roundy aspect-square flex items-center justify-center text-center" style="background-color: #F5F5F5;">
+                    <p id="random-fact" class="text-4xl">I am right handed</p>
+                </div>
+                <button id="roll-dice" type="button" class="partner-tile roundy aspect-square flex items-center justify-center text-center" style="background-color: #29292E; color: #ffffff; cursor: none;">
+                    <span class="text-4xl">Roll the Dice</span>
+                </button>
+            </div>
+        </section>
+
         <!-- Footer -->
         <section id="footer" class="grid grid-cols-6 gap-4 m-4">
             <a href="index.html#work" class="block col-span-6 md:col-span-3">
@@ -145,5 +158,41 @@
     <script src="dotcursor.js"></script>
     <script src="random-colors.js"></script>
     <script src="header.js"></script>
+    <script>
+        const facts = [
+            "I am right handed",
+            "I make a mean eggplant parmesan",
+            "I started making my own chili crisp during COVID",
+            "I have two daughters and thus, know the lyrics to Kpop Demon Hunters' Takedown by heart",
+            "I was the MVP of my high school bowling team",
+            "I'm from NY",
+            "I live in Seattle",
+            "My favorite pasta shape is bucatini",
+            "My favorite color is chartreuse",
+            "What's Up? by 4 Non Blondes is my karaoke song of choice",
+            "I prefer my eggs over-medium"
+        ];
+        const factEl = document.getElementById('random-fact');
+        const rollBtn = document.getElementById('roll-dice');
+        let rolling = false;
+        rollBtn.addEventListener('click', () => {
+            if (rolling) return;
+            rolling = true;
+            let ticks = 0;
+            const spin = setInterval(() => {
+                factEl.textContent = facts[Math.floor(Math.random() * facts.length)];
+                ticks++;
+                if (ticks > 12) {
+                    clearInterval(spin);
+                    let final;
+                    do {
+                        final = facts[Math.floor(Math.random() * facts.length)];
+                    } while (final === factEl.textContent && facts.length > 1);
+                    factEl.textContent = final;
+                    rolling = false;
+                }
+            }, 60);
+        });
+    </script>
 </body>
 </html>
