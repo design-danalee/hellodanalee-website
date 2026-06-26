@@ -1,12 +1,14 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name    = htmlspecialchars(trim($_POST['name']));
-    $email   = htmlspecialchars(trim($_POST['email']));
-    $message = htmlspecialchars(trim($_POST['message']));
+    $name         = htmlspecialchars(trim($_POST['name']));
+    $email        = htmlspecialchars(trim($_POST['email']));
+    $organization = htmlspecialchars(trim($_POST['organization'] ?? ''));
+    $project      = htmlspecialchars(trim($_POST['project'] ?? ''));
+    $message      = htmlspecialchars(trim($_POST['message'] ?? ''));
 
     $to      = "danalee.seattle@gmail.com";
     $subject = "New message from hellodanalee.com";
-    $body    = "Name: $name\nEmail: $email\n\nMessage:\n$message";
+    $body    = "Name: $name\nEmail: $email\nOrganization: $organization\nProject: $project\n\nOther notes:\n$message";
     $headers = "From: noreply@hellodanalee.com\r\nReply-To: $email";
 
     if (mail($to, $subject, $body, $headers)) {

@@ -11,29 +11,83 @@
     <link rel="stylesheet" href="size-small.css">
     <link rel="stylesheet" href="size-large.css">
     <style>
+        .contact-form label {
+            display: block;
+            font-size: 1.4rem;
+            margin-bottom: 0.75rem;
+        }
         .contact-form input,
-        .contact-form textarea {
+        .contact-form select {
             width: 100%;
-            background: transparent;
+            height: 80px;
+            background: #F5F5F5;
             border: none;
-            border-bottom: 1.5px solid black;
-            padding: 0.75rem 0;
+            border-radius: 1rem;
+            padding: 0 1.5rem;
             font-family: 'Schibsted Grotesk', sans-serif;
             font-size: 1.2rem;
+            color: #111;
             outline: none;
-            transition: border-color 0.3s ease;
-        }
-        .contact-form input:focus,
-        .contact-form textarea:focus {
-            border-bottom-color: lightseagreen;
+            transition: box-shadow 0.3s ease;
         }
         .contact-form textarea {
+            width: 100%;
+            min-height: 220px;
+            background: #F5F5F5;
+            border: none;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            font-family: 'Schibsted Grotesk', sans-serif;
+            font-size: 1.2rem;
+            color: #111;
+            outline: none;
             resize: none;
-            min-height: 140px;
+            transition: box-shadow 0.3s ease;
+        }
+        .contact-form input:focus,
+        .contact-form select:focus,
+        .contact-form textarea:focus {
+            box-shadow: inset 0 0 0 1.5px black;
+        }
+        /* Error state */
+        .contact-form input.error,
+        .contact-form input.error:focus {
+            box-shadow: inset 0 0 0 1.5px #d11;
+        }
+        .field-error {
+            color: #d11;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+        }
+        .field-error[hidden] {
+            display: none;
         }
         .contact-form input::placeholder,
         .contact-form textarea::placeholder {
             color: #aaa;
+        }
+        /* Custom select: hide native arrow, draw our own */
+        .select-wrap {
+            position: relative;
+        }
+        .contact-form select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            cursor: none;
+        }
+        .contact-form select.placeholder {
+            color: #aaa;
+        }
+        .select-wrap::after {
+            content: "↓";
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            font-size: 1.3rem;
+            color: #111;
         }
         .submit-btn {
             display: inline-block;
@@ -50,6 +104,18 @@
         .submit-btn:hover {
             background-color: lightseagreen;
             color: white;
+        }
+        /* Align the form to the hero text's left edge (.introduction is 60vw, pushed right with a 5rem right margin) */
+        .contact-section {
+            margin-left: calc(40vw - 5rem);
+            margin-right: 5rem;
+            margin-bottom: 4rem;
+        }
+        @media (max-width: 1024px) {
+            .contact-section {
+                margin-left: 2rem;
+                margin-right: 2rem;
+            }
         }
     </style>
 </head>
@@ -74,44 +140,61 @@
         </section>
 
         <!-- Contact Form -->
-        <section class="grid grid-cols-6 gap-4 m-4 mb-16">
-            <div class="col-span-6 md:col-span-4 md:col-start-2 roundy p-12 bg-gray-50">
-                <!-- Success / error messages -->
-                <div id="form-status" class="mb-6 hidden rounded-2xl p-4 text-center text-lg"></div>
+        <section class="contact-section">
+            <!-- Success / error messages -->
+            <div id="form-status" class="mb-6 hidden rounded-2xl p-4 text-center text-lg"></div>
 
-                <form
+            <form
                     action="contact.php"
                     method="POST"
-                    class="contact-form space-y-10"
+                    class="contact-form space-y-8"
                 >
                     <div>
-                        <input
-                            type="text"
-                            name="name"
-                            placeholder="Your name"
-                            required
-                        />
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" name="name" required />
                     </div>
                     <div>
-                        <input
-                            type="email"
-                            name="email"
-                            placeholder="Your email"
-                            required
-                        />
+                        <label for="email">Your Email</label>
+                        <input type="email" id="email" name="email" required />
+                        <p class="field-error" id="email-error" hidden>Please enter a valid email address.</p>
                     </div>
                     <div>
-                        <textarea
-                            name="message"
-                            placeholder="What's on your mind?"
-                            required
-                        ></textarea>
+                        <label for="organization">Organization</label>
+                        <div class="select-wrap">
+                            <select id="organization" name="organization">
+                                <option value="" disabled selected>Select one</option>
+                                <option>Start-Up</option>
+                                <option>Non-Profit</option>
+                                <option>Government Agency</option>
+                                <option>Corporation</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="project">Project</label>
+                        <div class="select-wrap">
+                            <select id="project" name="project">
+                                <option value="" disabled selected>Select</option>
+                                <option>Visual Identity</option>
+                                <option>Design System</option>
+                                <option>Website Design</option>
+                                <option>Product Design</option>
+                                <option>Landing Page</option>
+                                <option>Concept Envisioning</option>
+                                <option>Campaign Branding</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="message">Other notes</label>
+                        <textarea id="message" name="message"></textarea>
                     </div>
                     <div>
                         <button type="submit" class="submit-btn">Send it</button>
                     </div>
                 </form>
-            </div>
         </section>
 
         <!-- Footer -->
@@ -133,6 +216,26 @@
     <script src="random-colors.js"></script>
     <script src="header.js"></script>
     <script>
+        // Gray the placeholder text on selects until a real option is chosen
+        document.querySelectorAll('.contact-form select').forEach((sel) => {
+            const sync = () => sel.classList.toggle('placeholder', sel.value === '');
+            sync();
+            sel.addEventListener('change', sync);
+        });
+
+        // Show an error state when the email field holds an invalid address
+        const emailInput = document.getElementById('email');
+        const emailError = document.getElementById('email-error');
+        const validateEmail = () => {
+            const invalid = emailInput.value.trim() !== '' && !emailInput.checkValidity();
+            emailInput.classList.toggle('error', invalid);
+            emailError.hidden = !invalid;
+        };
+        emailInput.addEventListener('blur', validateEmail);
+        emailInput.addEventListener('input', () => {
+            if (emailInput.classList.contains('error')) validateEmail();
+        });
+
         const params = new URLSearchParams(window.location.search);
         const status = params.get('status');
         const el = document.getElementById('form-status');
