@@ -90,7 +90,8 @@
             color: #111;
         }
         .submit-btn {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
             padding: 1rem 2.5rem;
             background-color: black;
             color: white;
@@ -99,11 +100,21 @@
             border: none;
             border-radius: 2rem;
             cursor: none;
-            transition: background-color 0.3s ease, color 0.3s ease;
         }
-        .submit-btn:hover {
-            background-color: lightseagreen;
-            color: white;
+        .submit-btn .btn-arrow {
+            height: 1.4rem;
+            width: 0;
+            opacity: 0;
+            margin-left: 0;
+            overflow: hidden;
+            fill: currentColor;
+            flex-shrink: 0;
+            transition: width 0.3s ease, opacity 0.3s ease, margin-left 0.3s ease;
+        }
+        .submit-btn:hover .btn-arrow {
+            width: 1.4rem;
+            opacity: 1;
+            margin-left: 0.6rem;
         }
         /* Align the form to the hero text's left edge (.introduction is 60vw, pushed right with a 5rem right margin) */
         .contact-section {
@@ -135,7 +146,7 @@
         <!-- Hero -->
         <section class="introduction">
             <section class="flex">
-                <h1 class="hero-text">Let's make something good together.</h1>
+                <h1 class="hero-text">Let's talk. I'm great in meetings, dangerous with typography, and fun at parties.</h1>
             </section>
         </section>
 
@@ -148,10 +159,12 @@
                     action="contact.php"
                     method="POST"
                     class="contact-form space-y-8"
+                    novalidate
                 >
                     <div>
                         <label for="name">Your Name</label>
                         <input type="text" id="name" name="name" required />
+                        <p class="field-error" id="name-error" hidden>Please enter your name.</p>
                     </div>
                     <div>
                         <label for="email">Your Email</label>
@@ -192,7 +205,10 @@
                         <textarea id="message" name="message"></textarea>
                     </div>
                     <div>
-                        <button type="submit" class="submit-btn">Send it</button>
+                        <button type="submit" class="submit-btn">
+                            <span>Send it</span>
+                            <svg class="btn-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" aria-hidden="true"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"></path></svg>
+                        </button>
                     </div>
                 </form>
         </section>
@@ -214,7 +230,7 @@
 
     <script src="dotcursor.js"></script>
     <script src="random-colors.js"></script>
-    <script src="header.js"></script>
+    <script src="header.js?v=2"></script>
     <script>
         // Gray the placeholder text on selects until a real option is chosen
         document.querySelectorAll('.contact-form select').forEach((sel) => {
@@ -223,17 +239,50 @@
             sel.addEventListener('change', sync);
         });
 
-        // Show an error state when the email field holds an invalid address
+        // Custom error states (replacing the browser's default validation bubbles)
+        const contactForm = document.querySelector('.contact-form');
+        const nameInput = document.getElementById('name');
+        const nameError = document.getElementById('name-error');
         const emailInput = document.getElementById('email');
         const emailError = document.getElementById('email-error');
-        const validateEmail = () => {
-            const invalid = emailInput.value.trim() !== '' && !emailInput.checkValidity();
-            emailInput.classList.toggle('error', invalid);
-            emailError.hidden = !invalid;
+
+        const showError = (input, msgEl, invalid) => {
+            input.classList.toggle('error', invalid);
+            msgEl.hidden = !invalid;
         };
-        emailInput.addEventListener('blur', validateEmail);
+
+        // Name is required
+        const validateName = (force = false) => {
+            const invalid = nameInput.value.trim() === '';
+            showError(nameInput, nameError, invalid);
+            return !invalid;
+        };
+        // Email is required and must be a valid address.
+        // On blur we only flag a badly-formatted value; emptiness is only flagged on submit.
+        const validateEmail = (force = false) => {
+            const value = emailInput.value.trim();
+            const invalid = force ? (value === '' || !emailInput.checkValidity())
+                                  : (value !== '' && !emailInput.checkValidity());
+            showError(emailInput, emailError, invalid);
+            return value !== '' && emailInput.checkValidity();
+        };
+
+        nameInput.addEventListener('blur', () => validateName());
+        nameInput.addEventListener('input', () => {
+            if (nameInput.classList.contains('error')) validateName();
+        });
+        emailInput.addEventListener('blur', () => validateEmail());
         emailInput.addEventListener('input', () => {
             if (emailInput.classList.contains('error')) validateEmail();
+        });
+
+        contactForm.addEventListener('submit', (e) => {
+            const nameOk = validateName(true);
+            const emailOk = validateEmail(true);
+            if (!nameOk || !emailOk) {
+                e.preventDefault();
+                (!nameOk ? nameInput : emailInput).focus();
+            }
         });
 
         const params = new URLSearchParams(window.location.search);

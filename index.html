@@ -10,6 +10,16 @@
     <link rel="stylesheet" href="main.css">
     <link rel="stylesheet" href="size-small.css">
     <link rel="stylesheet" href="size-large.css">
+    <style>
+        /* On large screens, size-large.css sizes the work-card image with 180vh, which is
+           narrower than the card on wide (low aspect-ratio) displays and leaves gaps on the
+           sides until the scroll-zoom kicks in. max() keeps it at least full card width. */
+        @media (min-width: 1440px) {
+            .case-study {
+                background-size: max(100vw, 180vh);
+            }
+        }
+    </style>
 </head>
 <body class="bg-white text-gray-900">
     <main>
@@ -29,7 +39,7 @@
             </section>
         </section>
         
-        <section id="work">            
+        <section id="work" style="scroll-margin-top: 1rem;">
             <div class="m-4 space-y-4" class="snap-mandatory">            
                 <a href="hbcuv.html" class="block snap-center">
                     <div class="case-study roundy flex" style="background-image: url('assets/HBCUv_card.jpg');">
@@ -82,7 +92,7 @@
  
     <script src="dotcursor.js"></script>
     <script src="random-colors.js"></script>
-    <script src="header.js"></script>   
+    <script src="header.js?v=2"></script>
 
 </body>
 </html>
