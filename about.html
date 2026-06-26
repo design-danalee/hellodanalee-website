@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍕</text></svg>">
     <title>About — Dana Lee</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=Schibsted+Grotesk&display=swap" rel="stylesheet">
@@ -27,13 +28,27 @@
                 max-width: none;
             }
         }
+        .partner-tile {
+            line-height: 1.45;
+            padding: 4rem;
+        }
+        .partner-tile h3 {
+            font-size: 2.25rem;
+            margin-bottom: 1rem;
+        }
+        @media (max-width: 1024px) {
+            .partner-tile {
+                aspect-ratio: auto;
+                padding: 2.5rem;
+            }
+        }
     </style>
 </head>
 <body class="bg-white text-gray-900">
     <main>
         <header id="header" class="fixed top-0 left-0 w-screen bg-transparent transition-transform duration-300 p-4 px-4 z-10">
             <nav class="flex justify-between items-center mx-auto space-x-4">
-                <div class="text-6xl">🍽️</div>
+                <a href="index.html" class="text-6xl">🍽️</a>
                 <ul class="flex space-x-4">
                     <li><a href="about.html" class="nav-item">About</a></li>
                     <li><a href="index.html#work" class="nav-item">Work</a></li>
@@ -79,6 +94,37 @@
             <p>
                 Design doesn't happen in isolation. The more context there is, about your business, your users, the thing nobody put in the brief but everyone already knows, the better the work gets. I'm at my best when I'm close to the problem and the people trying to solve it.
             </p>
+        </section>
+
+        <!-- Partner with Me -->
+        <section class="m-4 mt-64 mb-24">
+            <h2 class="hero-text mb-10">Partner with Me</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="partner-tile roundy aspect-square flex flex-col justify-between" style="background-color: #F5F5F5;">
+                    <h3 class="text-2xl mb-3">Start-Ups</h3>
+                    <p>
+                        From first brand mark to full design system, I match your pace and build for where you're going, not just where you are. Early stage moves fast, and the work I deliver is made to keep up and scale when you do.
+                    </p>
+                </div>
+                <div class="partner-tile roundy aspect-square flex flex-col justify-between" style="background-color: #F5F5F5;">
+                    <h3 class="text-2xl mb-3">Non-Profits</h3>
+                    <p>
+                        Your mission deserves design that takes it seriously. I build identities and tools that communicate the weight and purpose of the work, so the people you're trying to reach actually feel it.
+                    </p>
+                </div>
+                <div class="partner-tile roundy aspect-square flex flex-col justify-between" style="background-color: #F5F5F5;">
+                    <h3 class="text-2xl mb-3">Government Agencies</h3>
+                    <p>
+                        Public-facing design that's clear, accessible, and built to serve the people using it. I understand the constraints of government work and design within them without losing quality.
+                    </p>
+                </div>
+                <div class="partner-tile roundy aspect-square flex flex-col justify-between" style="background-color: #F5F5F5;">
+                    <h3 class="text-2xl mb-3">Corporations</h3>
+                    <p>
+                        Comfortable working embedded with your team or owning the work end to end, with deep experience building design systems and brand identities that hold together across teams, platforms, and complexity.
+                    </p>
+                </div>
+            </div>
         </section>
 
         <!-- Footer -->
