@@ -34,12 +34,21 @@
                 padding: 0 0 2rem;
             }
         }
+        /* Mobile zoom that scales by height so the (now square) card stays fully
+           covered by the landscape photo throughout the scroll animation. */
+        @keyframes case-study-grow-cover {
+            to { background-size: auto 115%; }
+        }
         /* On mobile, make the case-study cards and the footer buttons square
            (height matches their full width). */
         @media (max-width: 767px) {
             .case-study {
                 height: auto;
                 aspect-ratio: 1 / 1;
+                /* Size by height (not width) so the photo always fills the taller
+                   square top-to-bottom; width overflows and is cropped/centered. */
+                background-size: auto 100%;
+                animation-name: case-study-grow-cover;
             }
             #more-work, #about, #contact {
                 height: auto;
