@@ -1,0 +1,171 @@
+# ============================================================================
+# Decap CMS configuration
+# ----------------------------------------------------------------------------
+# The CMS commits content changes straight to the GitHub repo. Each commit to
+# `main` triggers the GitHub Action, which rebuilds the site and FTPs it live.
+#
+# >>> BEFORE THIS WORKS, set `base_url` below to your LIVE site domain <<<
+#     (the same domain that serves /admin/ and the PHP OAuth proxy in /oauth/).
+#     See CMS-SETUP.md for the one-time GitHub OAuth app setup.
+# ============================================================================
+
+backend:
+  name: github
+  repo: design-danalee/hellodanalee-website
+  branch: main
+  # The PHP OAuth proxy lives on your own server (in /oauth/). Point Decap at it:
+  base_url: https://hellodanalee.com
+  auth_endpoint: /oauth/auth.php
+
+# Where uploaded images/videos are stored in the repo, and how they're
+# referenced from the built pages (kept relative to match existing content).
+media_folder: assets
+public_folder: assets
+
+# Open the editor on a side-by-side preview pane off by default (our templates
+# aren't registered for preview, so disable the broken default preview).
+editor:
+  preview: false
+
+collections:
+  # --------------------------------------------------------------------------
+  # Case studies. Add / edit / delete project pages here. A new project is
+  # automatically added to the home page work grid and gets its own URL.
+  # --------------------------------------------------------------------------
+  - name: projects
+    label: Projects (Case Studies)
+    label_singular: Project
+    folder: src/projects
+    create: true
+    extension: md
+    format: yaml-frontmatter
+    identifier_field: title
+    summary: "{{order}} — {{title}}"
+    sortable_fields: [order, title]
+    fields:
+      - { label: "Order in work grid (1 = first)", name: order, widget: number, value_type: int, min: 1, default: 99 }
+      - { label: "Project title", name: title, widget: string }
+      - { label: "Work-grid card image", name: card_image, widget: image }
+      - { label: "Work-grid card title", name: card_title, widget: string }
+      - { label: "Work-grid card tagline", name: card_tagline, widget: string }
+      - { label: "Hero image (top of page)", name: hero_image, widget: image }
+      - { label: "Intro description", name: description, widget: text }
+      - label: "Capabilities"
+        name: capabilities
+        widget: list
+        field: { label: Capability, name: capability, widget: string }
+      - label: "Client / meta lines"
+        name: meta
+        widget: list
+        field: { label: Line, name: line, widget: string }
+      - label: "Content sections"
+        name: sections
+        label_singular: Section
+        widget: list
+        summary: "{{fields.heading}}"
+        fields:
+          - { label: "Heading (optional)", name: heading, widget: string, required: false }
+          - { label: "Body text (optional)", name: body, widget: text, required: false }
+          - label: "Rows (images, videos, captions)"
+            name: rows
+            widget: list
+            types:
+              - label: "Full-width image"
+                name: image_full
+                widget: object
+                summary: "Full image — {{fields.src}}"
+                fields:
+                  - { label: Image, name: src, widget: image }
+                  - { label: "Fit class (optional, e.g. bg-center)", name: fit, widget: string, required: false }
+              - label: "Full-width image (natural height)"
+                name: image_full_natural
+                widget: object
+                summary: "Full image — {{fields.src}}"
+                fields:
+                  - { label: Image, name: src, widget: image }
+                  - { label: "Alt text", name: alt, widget: string, required: false }
+              - label: "Full-width video"
+                name: video_full
+                widget: object
+                summary: "Full video — {{fields.src}}"
+                fields:
+                  - { label: "Video file (mp4)", name: src, widget: file }
+              - label: "Half-width image"
+                name: image_half
+                widget: object
+                summary: "Half image — {{fields.src}}"
+                fields:
+                  - { label: Image, name: src, widget: image }
+                  - { label: "Fit class (optional, e.g. bg-center / bg-left / md:bg-cover)", name: fit, widget: string, required: false }
+              - label: "Half-width video"
+                name: video_half
+                widget: object
+                summary: "Half video — {{fields.src}}"
+                fields:
+                  - { label: "Video file (mp4/mov)", name: src, widget: file }
+              - label: "Half-width caption text"
+                name: text_half
+                widget: object
+                summary: "Caption"
+                fields:
+                  - { label: Text, name: text, widget: text }
+
+  # --------------------------------------------------------------------------
+  # Singleton pages. Edit the copy on Home, About and Contact.
+  # --------------------------------------------------------------------------
+  - name: pages
+    label: Pages
+    files:
+      - name: home
+        label: Home Page
+        file: src/_data/home.json
+        fields:
+          - { label: "Hero text", name: hero, widget: text }
+
+      - name: about
+        label: About Page
+        file: src/_data/about.json
+        fields:
+          - { label: "Hero text", name: hero, widget: text }
+          - label: "Body sections"
+            name: sections
+            widget: list
+            summary: "{{fields.heading}}"
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - { label: Body, name: body, widget: text }
+          - label: "Partner with Me"
+            name: partner
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - label: Tiles
+                name: tiles
+                widget: list
+                summary: "{{fields.title}}"
+                fields:
+                  - { label: Title, name: title, widget: string }
+                  - { label: Body, name: body, widget: text }
+          - label: "Other Data Points"
+            name: dataPoints
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - label: Facts (the dice roller)
+                name: facts
+                widget: list
+                field: { label: Fact, name: fact, widget: string }
+
+      - name: contact
+        label: Contact Page
+        file: src/_data/contact.json
+        fields:
+          - { label: "Hero text", name: hero, widget: text }
+          - label: "Organization dropdown options"
+            name: organizations
+            widget: list
+            field: { label: Option, name: option, widget: string }
+          - label: "Project dropdown options"
+            name: projects
+            widget: list
+            field: { label: Option, name: option, widget: string }

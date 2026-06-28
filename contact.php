@@ -1,21 +1,58 @@
 <?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name         = htmlspecialchars(trim($_POST['name']));
-    $email        = htmlspecialchars(trim($_POST['email']));
-    $organization = htmlspecialchars(trim($_POST['organization'] ?? ''));
-    $project      = htmlspecialchars(trim($_POST['project'] ?? ''));
-    $message      = htmlspecialchars(trim($_POST['message'] ?? ''));
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
-    $to      = "danalee.seattle@gmail.com";
-    $subject = "New message from hellodanalee.com";
-    $body    = "Name: $name\nEmail: $email\nOrganization: $organization\nProject: $project\n\nOther notes:\n$message";
-    $headers = "From: noreply@hellodanalee.com\r\nReply-To: $email";
-
-    if (mail($to, $subject, $body, $headers)) {
-        header("Location: contact.html?status=success");
-    } else {
-        header("Location: contact.html?status=error");
-    }
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+    header("Location: contact.html");
     exit;
 }
-?>
+
+$name         = trim($_POST['name'] ?? '');
+$email        = trim($_POST['email'] ?? '');
+$organization = trim($_POST['organization'] ?? '');
+$project      = trim($_POST['project'] ?? '');
+$message      = trim($_POST['message'] ?? '');
+
+// Load PHPMailer.
+// Manual install: upload the PHPMailer "src" folder so these paths exist.
+// Composer install: delete the three lines below and use:
+//   require __DIR__ . '/vendor/autoload.php';
+require __DIR__ . '/phpmailer/src/Exception.php';
+require __DIR__ . '/phpmailer/src/PHPMailer.php';
+require __DIR__ . '/phpmailer/src/SMTP.php';
+
+$cfg = require __DIR__ . '/smtp-config.php';
+
+$mail = new PHPMailer(true);
+try {
+    $mail->isSMTP();
+    $mail->Host       = $cfg['host'];
+    $mail->SMTPAuth   = true;
+    $mail->Username   = $cfg['username'];
+    $mail->Password   = $cfg['password'];
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Port       = (int) $cfg['port'];
+    $mail->CharSet    = 'UTF-8';
+
+    // Gmail requires the From to be the authenticated account; the visitor's
+    // address goes on Reply-To so you can reply straight to them.
+    $mail->setFrom($cfg['from'], $cfg['from_name']);
+    $mail->addAddress($cfg['to']);
+    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $mail->addReplyTo($email, $name !== '' ? $name : $email);
+    }
+
+    $mail->Subject = "New message from hellodanalee.com";
+    $mail->Body    = "Name: $name\n"
+                   . "Email: $email\n"
+                   . "Organization: $organization\n"
+                   . "Project: $project\n\n"
+                   . "Other notes:\n$message";
+
+    $mail->send();
+    header("Location: contact.html?status=success");
+} catch (Exception $e) {
+    error_log("contact.php PHPMailer error: " . $mail->ErrorInfo);
+    header("Location: contact.html?status=error");
+}
+exit;
