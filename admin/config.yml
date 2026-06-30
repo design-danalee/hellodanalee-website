@@ -22,10 +22,11 @@ backend:
 media_folder: assets
 public_folder: assets
 
-# Open the editor on a side-by-side preview pane off by default (our templates
-# aren't registered for preview, so disable the broken default preview).
+# Show the live side-by-side preview pane. A custom preview template (see
+# admin/preview.js) renders Projects with the real site CSS so the pane looks
+# like the published page. Singleton pages use the styled default preview.
 editor:
-  preview: false
+  preview: true
 
 collections:
   # --------------------------------------------------------------------------
