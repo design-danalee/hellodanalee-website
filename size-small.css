@@ -86,7 +86,7 @@
     }
 
     #case-study-header, .section-intro{
-        grid-template-columns: auto auto auto auto auto auto;
+        grid-template-columns: repeat(6, 1fr);
         margin-top: 4rem;
         margin-left: 2rem;
         margin-right: 2rem;
@@ -126,6 +126,10 @@
 
     video{
         width: 100%;
+    }
+
+    #more-work, #about, #contact {
+        height: 100vw;
     }
 
 }
