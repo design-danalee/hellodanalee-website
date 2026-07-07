@@ -15,4 +15,7 @@ capabilities:
   - " Web Design"
   - Art Direction
   - Interactive Prototyping
+meta:
+  - "Client: Africatown Community Land Trust"
+  - "Collaborators: Photon Factory"
 ---
