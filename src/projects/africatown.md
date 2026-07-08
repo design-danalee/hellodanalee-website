@@ -37,7 +37,7 @@ sections:
 
     rows:
       - type: image_full_natural
-        src: assets/africatown_03.png
+        src: assets/Africatown_03.mov
       - type: image_half
         src: assets/africatown_11.png
       - type: image_half
