@@ -5,6 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex" />
     <title>Content Manager — Dana Lee</title>
+    <style>
+      /* ── CMS editor hierarchy colours ─────────────────────────────────────
+         Decap uses styled-components (hashed class names), so we target the
+         stable fragment that appears in every generated class name.
+
+         Visual intent:
+           • Top-level list widget label tab  →  black  (e.g. "CONTENT SECTIONS")
+           • Nested list-item drag bars       →  dark grey  (each section row)
+      ──────────────────────────────────────────────────────────────────────── */
+
+      /* Top-level list widget label tabs (e.g. "CONTENT SECTIONS", "ROWS") */
+      [class*="ControlLabel"] {
+        background-color: #000 !important;
+        color: #fff !important;
+        border-color: #000 !important;
+      }
+
+      /* Drag-handle / collapse bars on nested list items (each section) */
+      [class*="ObjectWidgetTopBar"],
+      [class*="ListItemTopBar"] {
+        background-color: #444 !important;
+        color: #fff !important;
+        border-color: #444 !important;
+      }
+
+      /* Keep icon buttons visible on the dark bars */
+      [class*="ObjectWidgetTopBar"] button,
+      [class*="ListItemTopBar"] button {
+        color: #fff !important;
+      }
+    </style>
 </head>
 <body>
     <!-- Decap CMS: the visual editor. Loads its UI from the CDN. -->

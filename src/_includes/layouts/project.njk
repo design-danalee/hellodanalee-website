@@ -15,7 +15,7 @@ footer:
   {% elif row.type == "image_half" %}
     <div class="project-image roundy col-span-6 md:col-span-3{% if row.fit %} {{ row.fit }}{% endif %}" style="background-image: url('{{ row.src }}');"></div>
   {% elif row.type == "video_full" %}
-    <div class="wide-project-image roundy col-span-6 md:col-span-6">
+    <div class="wide-project-image roundy col-span-6 md:col-span-6{% if row.natural_height %} wide-project-image--natural{% endif %}">
         <video autoplay loop muted playsinline>
             <source src="{{ row.src }}" type="video/mp4">
         </video>

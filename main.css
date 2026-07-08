@@ -253,6 +253,28 @@ a:hover{
   display: none;
 }
 
+.wide-project-image video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.bg-center { background-position: center; }
+.bg-top    { background-position: top; }
+.bg-bottom { background-position: bottom; }
+.bg-left   { background-position: left; }
+.bg-right  { background-position: right; }
+
+.wide-project-image--natural {
+    height: auto;
+}
+
+.wide-project-image--natural video {
+    height: auto;
+    object-fit: unset;
+}
+
 .video-container {
     height: 48vw;
     margin: 2rem auto;

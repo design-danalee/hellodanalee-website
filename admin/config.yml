@@ -42,7 +42,11 @@ collections:
     format: yaml-frontmatter
     identifier_field: title
     summary: "{{order}} — {{title}}"
-    sortable_fields: [order, title]
+    sortable_fields:
+      fields: [order, title]
+      default:
+        field: order
+        direction: Ascending
     fields:
       - { label: "Order in work grid (1 = first)", name: order, widget: number, value_type: int, min: 1, default: 99 }
       - { label: "Project title", name: title, widget: string }
@@ -91,13 +95,24 @@ collections:
                 summary: "Full video — {{fields.src}}"
                 fields:
                   - { label: "Video file (mp4)", name: src, widget: file }
+                  - { label: "Natural height (scale to video's own aspect ratio)", name: natural_height, widget: boolean, default: false, required: false }
               - label: "Half-width image"
                 name: image_half
                 widget: object
                 summary: "Half image — {{fields.src}}"
                 fields:
                   - { label: Image, name: src, widget: image }
-                  - { label: "Fit class (optional, e.g. bg-center / bg-left / md:bg-cover)", name: fit, widget: string, required: false }
+                  - label: "Crop position"
+                    name: fit
+                    widget: select
+                    required: false
+                    default: "bg-center"
+                    options:
+                      - { label: "Center (default)", value: "bg-center" }
+                      - { label: "Top", value: "bg-top" }
+                      - { label: "Bottom", value: "bg-bottom" }
+                      - { label: "Left", value: "bg-left" }
+                      - { label: "Right", value: "bg-right" }
               - label: "Half-width video"
                 name: video_half
                 widget: object
