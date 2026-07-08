@@ -36,7 +36,7 @@ sections:
       forward.
 
     rows:
-      - type: image_full_natural
+      - type: video_full
         src: assets/Africatown_03.mov
       - type: image_half
         src: assets/africatown_11.png
