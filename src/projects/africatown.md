@@ -38,4 +38,8 @@ sections:
     rows:
       - type: image_full_natural
         src: assets/africatown_03.png
+      - type: image_half
+        src: assets/africatown_11.png
+      - type: image_half
+        src: assets/africatown_06.webp
 ---
