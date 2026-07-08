@@ -24,4 +24,18 @@ sections:
       - type: video_full
         src: assets/africatown_02.mp4
   - {}
+  - heading: Creating a Unified Voice
+    body: >+
+      Africatown operates across several distinct entities in Seattle's Central
+      District: a community land trust, individual properties, Africatown Plaza,
+      and Africatown Marketplace. Each had grown its own visual identity
+      organically over time. As a maturing organization ready to scale its
+      communications and elevate its public presence, Africatown needed a
+      unified system that reflected the visionary work they have always been
+      doing and created the organization-wide design standards to carry it
+      forward.
+
+    rows:
+      - type: image_full_natural
+        src: assets/africatown_03.png
 ---
