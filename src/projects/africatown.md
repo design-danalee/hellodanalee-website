@@ -18,4 +18,5 @@ capabilities:
 meta:
   - "Client: Africatown Community Land Trust"
   - "Collaborators: Photon Factory"
+  - "Website: africatownlandtrust.org"
 ---
