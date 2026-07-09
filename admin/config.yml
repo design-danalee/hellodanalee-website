@@ -42,6 +42,7 @@ collections:
     format: yaml-frontmatter
     identifier_field: title
     summary: "{{order}} — {{title}}"
+    # sortable_fields removed — Decap 3.x requires plain array; omitting uses defaults
     fields:
       - { label: "Order in work grid (1 = first)", name: order, widget: number, value_type: int, min: 1, default: 99 }
       - { label: "Project title", name: title, widget: string }
