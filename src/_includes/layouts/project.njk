@@ -13,7 +13,7 @@ footer:
   {% elif row.type == "video_half" %}
     <video class="project-image roundy col-span-6 md:col-span-3" src="{{ row.src }}" style="object-fit: cover;" autoplay loop muted playsinline></video>
   {% elif row.type == "image_half" %}
-    <div class="project-image roundy col-span-6 md:col-span-3{% if row.fit %} {{ row.fit }}{% endif %}" style="background-image: url('{{ row.src }}');"></div>
+    <div class="project-image roundy col-span-6 md:col-span-3{% if row.fit %} {{ row.fit }}{% endif %}{% if row.zoom %} {{ row.zoom }}{% endif %}" style="background-image: url('{{ row.src }}');"></div>
   {% elif row.type == "video_full" %}
     <div class="wide-project-image roundy col-span-6 md:col-span-6{% if row.natural_height %} wide-project-image--natural{% endif %}">
         <video autoplay loop muted playsinline>

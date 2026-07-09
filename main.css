@@ -266,6 +266,11 @@ a:hover{
 .bg-left   { background-position: left; }
 .bg-right  { background-position: right; }
 
+.bg-size-cover    { background-size: cover; }
+.bg-size-zoom-in  { background-size: 130%; }
+.bg-size-zoom-out { background-size: 70%; }
+.bg-size-contain  { background-size: contain; background-repeat: no-repeat; }
+
 .wide-project-image--natural {
     height: auto;
 }

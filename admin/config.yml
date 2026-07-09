@@ -113,6 +113,16 @@ collections:
                       - { label: "Bottom", value: "bg-bottom" }
                       - { label: "Left", value: "bg-left" }
                       - { label: "Right", value: "bg-right" }
+                  - label: "Zoom"
+                    name: zoom
+                    widget: select
+                    required: false
+                    default: "bg-size-cover"
+                    options:
+                      - { label: "Fill (default)", value: "bg-size-cover" }
+                      - { label: "Zoom in", value: "bg-size-zoom-in" }
+                      - { label: "Zoom out", value: "bg-size-zoom-out" }
+                      - { label: "Fit (show whole image)", value: "bg-size-contain" }
               - label: "Half-width video"
                 name: video_half
                 widget: object
