@@ -23,6 +23,7 @@ sections:
   - rows:
       - type: video_full
         src: assets/africatown_02.mp4
+        natural_height: true
   - {}
   - heading: Creating a Unified Voice
     body: >+
@@ -38,6 +39,7 @@ sections:
     rows:
       - type: video_full
         src: assets/Africatown_03.mov
+        natural_height: true
       - type: image_half
         src: assets/africatown_11.png
       - type: image_half
