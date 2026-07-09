@@ -81,7 +81,8 @@
         key: key,
         className:
           "project-image roundy col-span-6 md:col-span-3" +
-          (row.fit ? " " + row.fit : ""),
+          (row.fit ? " " + row.fit : "") +
+          (row.zoom ? " " + row.zoom : ""),
         style: { backgroundImage: "url('" + src + "')" },
       });
     }
@@ -90,7 +91,9 @@
         "div",
         {
           key: key,
-          className: "wide-project-image roundy col-span-6 md:col-span-6",
+          className:
+            "wide-project-image roundy col-span-6 md:col-span-6" +
+            (row.natural_height ? " wide-project-image--natural" : ""),
         },
         h(
           "video",
