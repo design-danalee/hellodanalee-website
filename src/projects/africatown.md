@@ -44,4 +44,6 @@ sections:
         src: assets/africatown_11.png
       - type: image_half
         src: assets/africatown_06.webp
+        fit: bg-center
+        zoom: bg-size-contain
 ---
