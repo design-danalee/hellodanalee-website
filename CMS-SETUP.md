@@ -1,8 +1,8 @@
 # Content management & build — setup guide
 
-Your site is now a small **Eleventy** static site with a **Decap CMS** visual editor.
-You edit content (copy, images, project pages) — never HTML — and a push to `main`
-rebuilds and deploys automatically.
+Your site is a small **Eleventy** static site with a **custom inline CMS** at `/admin/`.
+You edit content directly on a live render of each page — never HTML — and every save
+commits to `main`, which rebuilds and deploys automatically.
 
 ---
 
@@ -22,13 +22,27 @@ src/
   about.njk
   contact.njk
 assets/             Images & videos (CMS uploads land here)
-admin/              The CMS — config.yml + index.html  ->  https://YOUR-DOMAIN/admin/
+admin/              The custom CMS — a no-build Preact app served at /admin/
 oauth/              PHP GitHub login proxy (auth.php, callback.php)
 main.css, *.css, *.js, contact.php   Static files, copied as-is to the build
 ```
 
 The published files (`index.html`, `shipium.html`, …) are **generated** into `_site/`
 during the build. Don't hand-edit them.
+
+### Inside `admin/`
+
+```
+index.html            Entry (import map + CSP); loads the real site CSS so the
+                      editing surface looks exactly like the published page
+app.js                Orchestrator: routing, content store, save/commit
+vendor/               Pinned preact / htm / js-yaml (committed, no CDN at runtime)
+github/               GitHub read (Contents API) + write (Git Data API)
+content/              Frontmatter + JSON (de)serialization
+surface/              The editable render (mirrors project.njk + the page templates)
+crop/                 In-place crop/zoom control
+media/                Uploads (base64 blobs, video size guardrails)
+```
 
 ---
 
@@ -40,72 +54,62 @@ npm start            # live preview at http://localhost:8080
 npm run build        # one-off build into _site/
 ```
 
-Edit files under `src/` and the preview reloads. Commit `package-lock.json`.
+Open **http://localhost:8080/admin/**. Browsing/read is **unauthenticated** (the repo
+is public). To *save* locally, sign in with a token (see below) — GitHub OAuth only
+works on the live domain where the PHP proxy runs.
 
 ---
 
-## Turning the CMS on (one-time)
+## Signing in
 
-The CMS commits to GitHub on your behalf, so it needs a GitHub login. That login is
-brokered by the small PHP app in `/oauth/`.
+The CMS commits to GitHub on your behalf, so saving needs a GitHub login. Two ways
+(the **Sign in** button offers both):
 
-### 1. Create a GitHub OAuth App
+1. **Sign in with GitHub** — a popup through the PHP OAuth proxy in `/oauth/`. Works on
+   the live site once the OAuth app is configured (below). This is the normal path.
+2. **Use a token** — paste a fine-grained personal access token. Handy for local dev.
+   Create one at GitHub → Settings → Developer settings → **Fine-grained tokens**, scoped
+   to **this repo only**, with **Repository permissions → Contents: Read and write**.
+
+The token is held in memory / sessionStorage only (per-tab, cleared when you close it) —
+never committed, never in localStorage.
+
+### One-time GitHub OAuth app (for the live "Sign in with GitHub")
+
 GitHub → **Settings → Developer settings → OAuth Apps → New OAuth App**
 
-- **Application name:** anything (e.g. "Dana Lee site CMS")
-- **Homepage URL:** `https://YOUR-LIVE-DOMAIN`
-- **Authorization callback URL:** `https://YOUR-LIVE-DOMAIN/oauth/callback.php`
+- **Homepage URL:** `https://hellodanalee.com`
+- **Authorization callback URL:** `https://hellodanalee.com/oauth/callback.php`
 
-Click **Register**, then **Generate a new client secret**. Keep the
-**Client ID** and **Client secret** handy (the secret is shown only once).
-
-### 2. Add the credentials as GitHub Action secrets
-In the **repo** → Settings → Secrets and variables → Actions → New repository secret:
-
-- `GH_OAUTH_CLIENT_ID` → the Client ID
-- `GH_OAUTH_CLIENT_SECRET` → the Client secret
-
-(`FTP_PASSWORD` is already set.) On every deploy the workflow writes these into
-`/oauth/oauth-config.php` on the server — the secret is never committed to the repo.
-
-> Prefer to skip CI for this? Instead copy `oauth/oauth-config.sample.php` to
-> `oauth/oauth-config.php`, fill in the values, and upload it to the server's
-> `/oauth/` folder by hand. It is git-ignored and preserved across deploys.
-
-### 3. Point the CMS at your domain
-In `admin/config.yml`, set:
-
-```yaml
-backend:
-  base_url: https://YOUR-LIVE-DOMAIN
-```
-
-Commit and push. Once the deploy finishes, open **`https://YOUR-LIVE-DOMAIN/admin/`**,
-click *Login with GitHub*, and you're in.
+Register, generate a client secret, and add both as repo **Actions secrets**:
+`GH_OAUTH_CLIENT_ID` and `GH_OAUTH_CLIENT_SECRET`. On each deploy the workflow writes
+them into `/oauth/oauth-config.php` on the server (never committed). Or copy
+`oauth/oauth-config.sample.php` → `oauth-config.php` on the server by hand.
 
 ---
 
 ## Using the CMS
 
-- **Projects (Case Studies):** add, edit, reorder, or delete case studies. Each project
-  also has a *work-grid card* (image, title, tagline) that controls how it appears on the
-  home page. "Order in work grid" sets the position (1 = first). A new project gets its
-  own page automatically at `<filename>.html`.
-- **Content sections** on a project are a list of *sections* (optional heading + body),
-  each containing *rows*. A row is a full- or half-width image, a video, or a caption —
-  pick the type from the dropdown when you add one. Two half-width rows sit side by side.
-- **Pages:** edit the Home / About / Contact copy and the Contact form's dropdown options.
+Open `/admin/`, pick a page or case study, and toggle **Editing**:
 
-Every save is a commit to `main`, which triggers a rebuild + FTP deploy (a few minutes).
+- **Text** — click any headline, paragraph, tagline, caption, capability, or list item to
+  edit it in place.
+- **Images** — click a photo to **crop/zoom** it (drag to reposition, scroll/slider to
+  zoom) or **Replace** it. Cropping is non-destructive — the original file is kept.
+- **Video / natural-height images** — click to replace via upload.
+- **Structure** — hover a block for its toolbar (move ↑/↓, change type, delete); use
+  **+ Add block** / **+ Add section**; edit Home cards, About tiles/facts, and Contact
+  dropdown options inline. Create a new case study with **+ New case study**.
+
+Press **Save** to commit. Uploads (images/videos) ride along in the same commit via the
+Git Data API — **no 1 MB limit** (large videos are warned/blocked to keep the repo lean).
+Every save is one commit to `main`, which triggers the rebuild + FTP deploy (a few minutes).
 
 ---
 
 ## Deploy notes
 
 - `.github/workflows/deploy.yml` runs `npm ci` → `npm run build` → writes the OAuth
-  config → FTP-uploads **`_site/`**.
-- `dangerous-clean-slate` is **off**, so server-only files that aren't part of the build
-  — `smtp-config.php`, `phpmailer/`, and `oauth/oauth-config.php` if you uploaded it by
-  hand — are preserved across deploys. (Those two contact-form files are not in the repo;
-  keep them on the server, or commit `phpmailer/` and provision `smtp-config.php` like the
-  OAuth config if you want them managed by CI.)
+  config → FTP-uploads **`_site/`** (which includes `admin/`).
+- `dangerous-clean-slate` is **off**, so server-only files not in the build —
+  `smtp-config.php`, `phpmailer/`, and `oauth/oauth-config.php` — are preserved.

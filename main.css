@@ -271,6 +271,12 @@ a:hover{
 .bg-size-zoom-out { background-size: 70%; }
 .bg-size-contain  { background-size: contain; background-repeat: no-repeat; }
 
+/* Cropped images set an explicit background-position/background-size inline
+   (from the CMS crop tool), so they opt out of the default 100vw sizing and the
+   scroll-grow animation to stay exactly where the editor placed them. Applies
+   ONLY to images given a crop; all other images are unaffected. */
+.bg-cropped { animation: none !important; }
+
 .wide-project-image--natural {
     height: auto;
 }

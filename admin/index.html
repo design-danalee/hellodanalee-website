@@ -1,46 +1,53 @@
 <!doctype html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex" />
     <title>Content Manager — Dana Lee</title>
-    <style>
-      /* ── CMS editor hierarchy colours ─────────────────────────────────────
-         Decap uses styled-components (hashed class names), so we target the
-         stable fragment that appears in every generated class name.
 
-         Visual intent:
-           • Top-level list widget label tab  →  black  (e.g. "CONTENT SECTIONS")
-           • Nested list-item drag bars       →  dark grey  (each section row)
-      ──────────────────────────────────────────────────────────────────────── */
+    <!-- CSP (relaxed for dev; tightened in M6). Allows the Tailwind Play CDN
+         the site itself uses, Google Fonts, GitHub API, and repo/live images. -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self';
+               script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com;
+               style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.tailwindcss.com;
+               font-src https://fonts.gstatic.com data:;
+               img-src 'self' data: blob: https:;
+               connect-src 'self' https://api.github.com https://github.com;"
+    />
 
-      /* Top-level list widget label tabs (e.g. "CONTENT SECTIONS", "ROWS") */
-      [class*="ControlLabel"] {
-        background-color: #000 !important;
-        color: #fff !important;
-        border-color: #000 !important;
+    <!-- Same Tailwind + fonts + real site CSS the published pages use, so the
+         editing surface looks identical to what it publishes. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=Schibsted+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/main.css" />
+    <link rel="stylesheet" href="/size-small.css" />
+    <link rel="stylesheet" href="/size-large.css" />
+    <link rel="stylesheet" href="/index.css" />
+    <link rel="stylesheet" href="/about.css" />
+    <link rel="stylesheet" href="/contact.css" />
+    <!-- Admin chrome last so it wins for editor UI (scoped, doesn't touch content). -->
+    <link rel="stylesheet" href="/admin/styles/admin.css" />
+
+    <script type="importmap">
+      {
+        "imports": {
+          "preact": "/admin/vendor/preact.module.js",
+          "preact/hooks": "/admin/vendor/hooks.module.js",
+          "htm": "/admin/vendor/htm.module.js",
+          "js-yaml": "/admin/vendor/js-yaml.mjs",
+          "@/": "/admin/"
+        }
       }
-
-      /* Drag-handle / collapse bars on nested list items (each section) */
-      [class*="ObjectWidgetTopBar"],
-      [class*="ListItemTopBar"] {
-        background-color: #444 !important;
-        color: #fff !important;
-        border-color: #444 !important;
-      }
-
-      /* Keep icon buttons visible on the dark bars */
-      [class*="ObjectWidgetTopBar"] button,
-      [class*="ListItemTopBar"] button {
-        color: #fff !important;
-      }
-    </style>
-</head>
-<body>
-    <!-- Decap CMS: the visual editor. Loads its UI from the CDN. -->
-    <script src="https://unpkg.com/decap-cms@^3.6.0/dist/decap-cms.js"></script>
-    <!-- Live-preview customization: real CSS + a faithful Projects preview. -->
-    <script src="/admin/preview.js"></script>
-</body>
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/admin/app.js"></script>
+  </body>
 </html>
