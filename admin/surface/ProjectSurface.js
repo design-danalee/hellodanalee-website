@@ -193,6 +193,8 @@ export function ProjectSurface({ project, editable, update, onImageClick }) {
                     onMoveDown: () => moveRow(si, ri, 1),
                     onDelete: () => deleteRow(si, ri),
                     onChangeType: (t) => setRow(si, ri, changeRowType(row, t)),
+                    onSetNatural: (val) =>
+                      setRow(si, ri, { ...row, natural_height: val }),
                   }}
                 />`
               )}

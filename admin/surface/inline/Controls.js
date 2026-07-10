@@ -46,6 +46,15 @@ export function RowTools({ row, tools }) {
     >
       ${ROW_TYPES.map((t) => html`<option value=${t.type}>${t.label}</option>`)}
     </select>
+    ${row.type === "video_full"
+      ? html`<button
+          class=${"rt-btn" + (row.natural_height ? " is-on" : "")}
+          title="Scale the video to its own height instead of cropping it"
+          onClick=${() => tools.onSetNatural(!row.natural_height)}
+        >
+          Natural height
+        </button>`
+      : null}
     <button class="rt-btn rt-del" title="Delete block" onClick=${tools.onDelete}>✕</button>
   </div>`;
 }

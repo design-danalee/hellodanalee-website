@@ -396,6 +396,13 @@ function App() {
 
 function LoginModal({ onOAuth, onToken, onClose }) {
   const [tok, setTok] = useState("");
+  // GitHub sign-in needs the PHP OAuth proxy, which only runs on the live host.
+  // On localhost the dev server can't execute PHP (the popup would just download
+  // auth.php), so hide that button here and steer to the token.
+  const host = location.hostname;
+  const isLocal =
+    /^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[?::1\]?)$/.test(host) ||
+    host.endsWith(".local");
   return html`<div
     class="crop-overlay"
     onClick=${(e) => {
@@ -405,18 +412,24 @@ function LoginModal({ onOAuth, onToken, onClose }) {
     <div class="crop-modal" style="width:min(440px,92vw)">
       <div class="crop-modal-head"><strong>Sign in to save</strong></div>
       <p style="font-size:13px;color:#6b6b72;margin-bottom:14px">
-        Saving commits to GitHub, so it needs a login. On the live site use
-        GitHub sign-in; for local testing paste a fine-grained token with
-        <em>Contents: read & write</em> on this repo.
+        Saving commits to GitHub, so it needs a login.
+        ${isLocal
+          ? html`You're on <strong>localhost</strong>, where GitHub sign-in
+              can't run — paste a fine-grained token with
+              <em>Contents: read & write</em> on this repo instead.`
+          : html`Use GitHub sign-in below, or paste a fine-grained token with
+              <em>Contents: read & write</em>.`}
       </p>
-      <button
-        class="admin-btn admin-btn--primary"
-        style="width:100%;margin-bottom:14px"
-        onClick=${onOAuth}
-      >
-        Sign in with GitHub
-      </button>
-      <label style="font-size:12px;color:#8a8a92">Or paste an access token</label>
+      ${!isLocal
+        ? html`<button
+            class="admin-btn admin-btn--primary"
+            style="width:100%;margin-bottom:14px"
+            onClick=${onOAuth}
+          >
+            Sign in with GitHub
+          </button>`
+        : null}
+      <label style="font-size:12px;color:#8a8a92">${isLocal ? "Access token" : "Or paste an access token"}</label>
       <input
         type="password"
         class="admin-token-input"
@@ -434,21 +447,44 @@ function LoginModal({ onOAuth, onToken, onClose }) {
   </div>`;
 }
 
+function BackArrow() {
+  return html`<svg
+    class="admin-back-arrow"
+    viewBox="0 0 24 24"
+    width="18"
+    height="18"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M19 12H5" />
+    <path d="M12 19l-7-7 7-7" />
+  </svg>`;
+}
+
 function Toolbar(props) {
   return html`<header class="admin-bar">
     <div class="admin-bar-left">
-      <a class="admin-brand" href="#/">✦ Content</a>
+      ${props.isDashboard
+        ? html`<span class="admin-brand">Dashboard</span>`
+        : html`<a class="admin-back" href="#/"><${BackArrow} /> Dashboard</a>`}
+    </div>
+    <div class="admin-bar-center">
       ${!props.isDashboard
-        ? html`<span class="admin-crumb">${props.title}</span>`
+        ? html`<span class="admin-title">${props.title}</span>
+            <span class="admin-viewtag">${props.editable ? "Edit view" : "Preview"}</span>`
         : null}
     </div>
     <div class="admin-bar-right">
       ${!props.isDashboard
         ? html`<button
-            class=${"admin-btn" + (props.editable ? " is-on" : "")}
+            class=${"admin-btn" + (props.editable ? "" : " is-on")}
             onClick=${() => props.setEditable(!props.editable)}
           >
-            ${props.editable ? "Editing" : "Preview"}
+            ${props.editable ? "Preview" : "Edit"}
           </button>`
         : null}
       <button

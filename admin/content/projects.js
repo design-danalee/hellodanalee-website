@@ -8,13 +8,36 @@ export function projectPath(slug) {
   return `${PROJECTS_DIR}/${slug}.md`;
 }
 
+// Fallback project discovery with no GitHub API call: parse the built home
+// page (same-origin) for its work-grid links. Used when the Contents-API
+// listing is rate-limited/unavailable.
+async function slugsFromHome() {
+  const res = await fetch("/?_=" + Date.now(), { cache: "no-store" });
+  const html = await res.text();
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  const scope = doc.querySelector("#work") || doc;
+  const slugs = [...scope.querySelectorAll('a[href$=".html"]')]
+    .map((a) => a.getAttribute("href").split("/").pop().replace(/\.html$/, ""))
+    .filter((s) => s && !["index", "about", "contact"].includes(s));
+  return [...new Set(slugs)].map((slug) => ({
+    name: slug + ".md",
+    path: projectPath(slug),
+  }));
+}
+
 export function makeProjects(contents) {
   return {
     async list() {
-      const entries = await contents.list(PROJECTS_DIR);
-      const mdFiles = entries.filter(
-        (e) => e.type === "file" && e.name.endsWith(".md")
-      );
+      let mdFiles;
+      try {
+        const entries = await contents.list(PROJECTS_DIR);
+        mdFiles = entries.filter(
+          (e) => e.type === "file" && e.name.endsWith(".md")
+        );
+      } catch (e) {
+        // Rate-limited or offline → discover from the home page (no API).
+        mdFiles = await slugsFromHome();
+      }
       const out = [];
       for (const f of mdFiles) {
         const { text, sha } = await contents.read(f.path);
