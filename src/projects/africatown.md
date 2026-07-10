@@ -33,6 +33,10 @@ sections:
         natural_height: true
       - type: image_half
         src: assets/africatown_11.png
+        crop:
+          x: 43
+          "y": 29
+          size: 180
       - type: image_half
         src: assets/africatown_06.webp
         fit: bg-center
