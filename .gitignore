@@ -5,3 +5,7 @@ _site/
 # Server-only secrets — never commit. Provisioned on the server / via CI secrets.
 oauth/oauth-config.php
 smtp-config.php
+
+# Never commit archives (they can smuggle secrets — see contact-form-upload.zip
+# removed 2026-07-11; it contained a real smtp-config.php with live credentials)
+*.zip
