@@ -50,4 +50,7 @@ sections:
           x: 0
           "y": 100
           size: 103
+      - type: video_full
+        src: ""
+        natural_height: false
 ---
