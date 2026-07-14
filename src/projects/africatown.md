@@ -43,7 +43,7 @@ sections:
         src: assets/africatown-13.png
         alt: ""
       - type: text_half
-        text: Our hero typeface is Tatsuro, from Vocal Type, the Black-owned foundry founded by Tré Seals whose typefaces each draw from the history of a movement or community. Choosing it was a values decision as much as a design one. Its bold, declarative letterforms give Africatown a voice that is confident, dignified, and impossible to overlook.
+        text: "Africatown's hero typeface is Tatsuro, from Vocal Type, the Black-owned foundry founded by Tré Seals. Every Vocal Type face is drawn from the history of a movement or an underrepresented community, so choosing it was a values decision as much as a design one. Tatsuro's bold, declarative letterforms give Africatown a voice that carries weight: confident, dignified, and impossible to overlook. It sets a tone of presence and pride that runs through the entire identity."
       - type: image_half
         src: assets/africatown-14.jpg
         crop:
