@@ -34,15 +34,20 @@ sections:
       - type: image_half
         src: assets/africatown_11.png
         crop:
-          x: 43
-          "y": 29
+          x: 100
+          "y": 12
           size: 180
+      - type: text_half
+        text: "Pattern became one of the system's most distinctive identifiers. Drawing from African textiles, architecture, and decorative motifs, it weaves together lines, systems, and pixels that pay homage to the digital era and Africatown's forward-thinking vision. We pulled from Kente cloth and its symbolism, along with the textures of Africatown's own spaces: the brickwork at the Liberty Bank Building, the murals, the Art Deco details of the William Grose Center, the barber pole's stripe. Patterns can stand alone, layer with photography, or pair with typography."
+      - type: image_full_natural
+        src: assets/africatown-13.png
+        alt: ""
+      - type: text_half
+        text: Our hero typeface is Tatsuro, from Vocal Type, the Black-owned foundry founded by Tré Seals whose typefaces each draw from the history of a movement or community. Choosing it was a values decision as much as a design one. Its bold, declarative letterforms give Africatown a voice that is confident, dignified, and impossible to overlook.
       - type: image_half
-        src: assets/africatown_06.webp
-        fit: bg-center
-        zoom: bg-size-contain
+        src: assets/africatown-14.jpg
         crop:
-          x: 50
-          "y": 50
-          size: 113
+          x: 0
+          "y": 100
+          size: 103
 ---
