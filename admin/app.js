@@ -122,6 +122,17 @@ function App() {
     return false;
   }
 
+  // Turning edit mode ON requires being signed in; going back to Preview
+  // never does (nothing destructive about looking at the page normally).
+  async function toggleEditable() {
+    if (editable) {
+      setEditable(false);
+      return;
+    }
+    if (!(await ensureAuth())) return;
+    setEditable(true);
+  }
+
   async function loginOAuth() {
     try {
       await loginWithGitHub();
@@ -183,7 +194,8 @@ function App() {
     }
   }
 
-  function createProject() {
+  async function createProject() {
+    if (!(await ensureAuth())) return;
     const title = prompt("New case study title:");
     if (!title) return;
     let slug = slugify(title);
@@ -396,7 +408,7 @@ function App() {
       isDashboard=${!pm && !gm}
       isProject=${!!pm}
       editable=${editable}
-      setEditable=${setEditable}
+      setEditable=${toggleEditable}
       dirtyCount=${dirty.size}
       saving=${saving}
       authed=${authed}
@@ -527,7 +539,7 @@ function Toolbar(props) {
       ${!props.isDashboard
         ? html`<button
             class=${"admin-btn" + (props.editable ? "" : " is-on")}
-            onClick=${() => props.setEditable(!props.editable)}
+            onClick=${props.setEditable}
           >
             ${props.editable ? "Preview" : "Edit"}
           </button>`
