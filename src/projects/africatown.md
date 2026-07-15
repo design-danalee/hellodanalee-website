@@ -50,6 +50,17 @@ sections:
           x: 0
           "y": 100
           size: 103
+      - type: image_full_natural
+        src: assets/africatown-04.jpg
+        alt: ""
+      - type: image_half
+        src: assets/africatown-15.jpg
+        crop:
+          x: 50
+          "y": 50
+          size: 100
+      - type: text_half
+        text: "The pattern is built to scale in emphasis depending on what a moment needs. On a title slide or a cover, it can take center stage, setting an immediate, celebratory tone. In a data-heavy or photo-driven layout, it steps back to a quiet accent or disappears entirely, letting the imagery do the talking. This range keeps the identity flexible: unmistakably Africatown when it needs to make a statement, and never competing with the content when the work itself should lead."
       - type: video_full
         src: assets/africatown-01.mov
         natural_height: false
