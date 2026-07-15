@@ -18,10 +18,7 @@ meta:
   - "Collaborators: Photon Factory"
   - "Website: africatownlandtrust.org"
 sections:
-  - rows:
-      - type: video_full
-        src: assets/africatown_02.mp4
-        natural_height: true
+  - rows: []
   - {}
   - heading: Creating a Unified Voice
     body: |+
@@ -66,7 +63,9 @@ sections:
       - type: video_full
         src: assets/africatown-01.mov
         natural_height: false
-      - type: video_full
+      - type: video_half
         src: assets/africatown-17.mp4
-        natural_height: true
+      - type: text_half
+        text: "The Africatown Community Land Trust website puts the whole system to work. A striking hero typeface carries bold, declarative headlines, pattern adds texture and rhythm, and community imagery keeps real people at the heart of the story. The layout stays clear and purposeful, guiding every visitor toward one unmistakable action: a bold Donate button anchored in the top right, ready the moment someone decides to join the movement."
+hero_video: assets/africatown-02.mp4
 ---
