@@ -51,6 +51,6 @@ sections:
           "y": 100
           size: 103
       - type: video_full
-        src: ""
+        src: assets/africatown-01.mov
         natural_height: false
 ---
