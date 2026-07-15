@@ -18,12 +18,13 @@ meta:
   - "Collaborators: Photon Factory"
   - "Website: africatownlandtrust.org"
 sections:
-  - rows: []
+  - rows:
+      - type: video_full
+        src: assets/africatown_02.mp4
+        natural_height: true
   - {}
   - heading: Creating a Unified Voice
-    body: |+
-      Africatown operates across several distinct entities in Seattle's Central District: a community land trust, individual properties, Africatown Plaza, and Africatown Marketplace. Each had grown its own visual identity organically over time. As a maturing organization ready to scale its communications and elevate its public presence, Africatown needed a unified system that reflected the visionary work they have always been doing and created the organization-wide design standards to carry it forward.
-
+    body: "Africatown operates across several distinct entities in Seattle's Central District: a community land trust, individual properties, Africatown Plaza, and Africatown Marketplace. Each had grown its own visual identity organically over time. As a maturing organization ready to scale its communications and elevate its public presence, Africatown needed a unified system that reflected the visionary work they have always been doing and created the organization-wide design standards to carry it forward."
     rows:
       - type: video_full
         src: assets/Africatown_03.mov
@@ -67,5 +68,5 @@ sections:
         src: assets/africatown-17.mp4
       - type: text_half
         text: "The Africatown Community Land Trust website puts the whole system to work. A striking hero typeface carries bold, declarative headlines, pattern adds texture and rhythm, and community imagery keeps real people at the heart of the story. The layout stays clear and purposeful, guiding every visitor toward one unmistakable action: a bold Donate button anchored in the top right, ready the moment someone decides to join the movement."
-hero_video: assets/africatown-02.mp4
+  - rows: []
 ---
