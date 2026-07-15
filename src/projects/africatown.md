@@ -50,6 +50,8 @@ sections:
           x: 0
           "y": 100
           size: 103
+      - type: image_full
+        src: assets/africatown-hero.png
       - type: image_full_natural
         src: assets/africatown-04.jpg
         alt: ""
@@ -64,4 +66,7 @@ sections:
       - type: video_full
         src: assets/africatown-01.mov
         natural_height: false
+      - type: video_full
+        src: assets/africatown-17.mp4
+        natural_height: true
 ---
