@@ -1,6 +1,7 @@
-// GitHub auth. Reuses the existing PHP OAuth proxy (/oauth/auth.php + callback.php)
-// by replicating Decap's postMessage handshake. Token is held in memory, with a
-// sessionStorage fallback (per-tab, cleared on close) — never localStorage.
+// GitHub auth. Talks to the OAuth proxy (Cloudflare Pages Functions at
+// /oauth/auth + /oauth/callback) via Decap's postMessage handshake. Token is
+// held in memory, with a sessionStorage fallback (per-tab, cleared on close)
+// — never localStorage.
 import { CONFIG } from "@/config.js";
 
 let memToken = null;
@@ -56,7 +57,7 @@ export function loginWithGitHub() {
       const data = e.data;
       if (typeof data !== "string") return;
       if (data === "authorizing:github") {
-        // Reply so callback.php captures our origin, then sends the token.
+        // Reply so /oauth/callback captures our origin, then sends the token.
         popup.postMessage("authorizing:github", location.origin);
         return;
       }

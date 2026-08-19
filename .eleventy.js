@@ -15,9 +15,7 @@ module.exports = function (eleventyConfig) {
     "about.js",
     "contact.css",
     "contact.js",
-    "contact.php",
     "admin",
-    "oauth",
   ];
   passthrough.forEach((p) => eleventyConfig.addPassthroughCopy(p));
 

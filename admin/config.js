@@ -8,8 +8,8 @@ export const CONFIG = {
   siteOrigin: "https://hellodanalee.com",
   // Where uploaded media is committed in the repo.
   mediaDir: "assets",
-  // OAuth proxy endpoint (PHP), served from the same origin in production.
-  authEndpoint: "/oauth/auth.php",
+  // OAuth proxy endpoint (Cloudflare Pages Function), served from the same origin.
+  authEndpoint: "/oauth/auth",
   // Video upload guardrails (bytes).
   videoWarnBytes: 10 * 1024 * 1024,
   videoBlockBytes: 25 * 1024 * 1024,

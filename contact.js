@@ -42,12 +42,25 @@ emailInput.addEventListener('input', () => {
     if (emailInput.classList.contains('error')) validateEmail();
 });
 
-contactForm.addEventListener('submit', (e) => {
+contactForm.addEventListener('submit', async (e) => {
     const nameOk = validateName(true);
     const emailOk = validateEmail(true);
     if (!nameOk || !emailOk) {
         e.preventDefault();
         (!nameOk ? nameInput : emailInput).focus();
+        return;
+    }
+    e.preventDefault();
+    try {
+        const res = await fetch(contactForm.action, {
+            method: 'POST',
+            body: new FormData(contactForm),
+            headers: { Accept: 'application/json' },
+        });
+        const data = await res.json();
+        location.href = data.success ? 'contact.html?status=success' : 'contact.html?status=error';
+    } catch (_) {
+        location.href = 'contact.html?status=error';
     }
 });
 

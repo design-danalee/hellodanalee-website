@@ -23,8 +23,8 @@ src/
   contact.njk
 assets/             Images & videos (CMS uploads land here)
 admin/              The custom CMS — a no-build Preact app served at /admin/
-oauth/              PHP GitHub login proxy (auth.php, callback.php)
-main.css, *.css, *.js, contact.php   Static files, copied as-is to the build
+functions/oauth/    Cloudflare Pages Functions — GitHub login proxy (auth.js, callback.js)
+main.css, *.css, *.js   Static files, copied as-is to the build
 ```
 
 The published files (`index.html`, `shipium.html`, …) are **generated** into `_site/`
@@ -56,7 +56,8 @@ npm run build        # one-off build into _site/
 
 Open **http://localhost:8080/admin/**. Browsing/read is **unauthenticated** (the repo
 is public). To *save* locally, sign in with a token (see below) — GitHub OAuth only
-works on the live domain where the PHP proxy runs.
+works on hosts Cloudflare actually serves (production and its `*.pages.dev` preview
+URLs), not on localhost.
 
 ---
 
@@ -65,8 +66,9 @@ works on the live domain where the PHP proxy runs.
 The CMS commits to GitHub on your behalf, so saving needs a GitHub login. Two ways
 (the **Sign in** button offers both):
 
-1. **Sign in with GitHub** — a popup through the PHP OAuth proxy in `/oauth/`. Works on
-   the live site once the OAuth app is configured (below). This is the normal path.
+1. **Sign in with GitHub** — a popup through the OAuth proxy at `/oauth/auth` +
+   `/oauth/callback` (Cloudflare Pages Functions, `functions/oauth/`). Works on the live
+   site once the OAuth app is configured (below). This is the normal path.
 2. **Use a token** — paste a fine-grained personal access token. Handy for local dev.
    Create one at GitHub → Settings → Developer settings → **Fine-grained tokens**, scoped
    to **this repo only**, with **Repository permissions → Contents: Read and write**.
@@ -79,12 +81,13 @@ never committed, never in localStorage.
 GitHub → **Settings → Developer settings → OAuth Apps → New OAuth App**
 
 - **Homepage URL:** `https://hellodanalee.com`
-- **Authorization callback URL:** `https://hellodanalee.com/oauth/callback.php`
+- **Authorization callback URL:** `https://hellodanalee.com/oauth/callback`
 
-Register, generate a client secret, and add both as repo **Actions secrets**:
-`GH_OAUTH_CLIENT_ID` and `GH_OAUTH_CLIENT_SECRET`. On each deploy the workflow writes
-them into `/oauth/oauth-config.php` on the server (never committed). Or copy
-`oauth/oauth-config.sample.php` → `oauth-config.php` on the server by hand.
+Register, generate a client secret, and add both in the **Cloudflare Pages project's
+Settings → Environment variables** (marked Secret) as `GH_OAUTH_CLIENT_ID` and
+`GH_OAUTH_CLIENT_SECRET` — read directly by `functions/oauth/auth.js` and
+`callback.js` at request time. Nothing is written to a file, and there's no CI
+step involved.
 
 ---
 
@@ -103,13 +106,22 @@ Open `/admin/`, pick a page or case study, and toggle **Editing**:
 
 Press **Save** to commit. Uploads (images/videos) ride along in the same commit via the
 Git Data API — **no 1 MB limit** (large videos are warned/blocked to keep the repo lean).
-Every save is one commit to `main`, which triggers the rebuild + FTP deploy (a few minutes).
+Every save is one commit to `main`, which triggers the rebuild + deploy (a couple minutes).
 
 ---
 
 ## Deploy notes
 
-- `.github/workflows/deploy.yml` runs `npm ci` → `npm run build` → writes the OAuth
-  config → FTP-uploads **`_site/`** (which includes `admin/`).
-- `dangerous-clean-slate` is **off**, so server-only files not in the build —
-  `smtp-config.php`, `phpmailer/`, and `oauth/oauth-config.php` — are preserved.
+- Hosting is **Cloudflare Pages**, connected directly to this GitHub repo via its
+  native Git integration — every push to `main` triggers a build (`npm run build`)
+  and deploy automatically. There's no FTP, no deploy workflow, and no server-only
+  files to keep in sync: `functions/oauth/` ships as part of the repo and Cloudflare
+  runs it directly.
+- `.github/workflows/ci.yml` is just a build-sanity check on pull requests — it
+  doesn't deploy anything.
+- Secrets (`GH_OAUTH_CLIENT_ID`, `GH_OAUTH_CLIENT_SECRET`) live in the Cloudflare
+  Pages project's environment variables, not in GitHub Actions secrets or any
+  file in the repo.
+- The contact form sends through [Web3Forms](https://web3forms.com) rather than a
+  self-hosted mailer — its access key lives in `src/_data/contact.json`
+  (`web3formsKey`), which Web3Forms documents as safe to commit publicly.

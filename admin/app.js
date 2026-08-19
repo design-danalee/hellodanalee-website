@@ -456,13 +456,17 @@ function App() {
 
 function LoginModal({ onOAuth, onToken, onClose }) {
   const [tok, setTok] = useState("");
-  // GitHub sign-in needs the PHP OAuth proxy, which only runs on the live host.
-  // On localhost the dev server can't execute PHP (the popup would just download
-  // auth.php), so hide that button here and steer to the token.
+  // GitHub sign-in needs the OAuth proxy Functions, which only run on hosts
+  // Cloudflare actually serves. On localhost the dev server can't run them
+  // (the popup would just 404), so hide that button here and steer to the
+  // token. *.pages.dev preview deploys hit the same limit for a different
+  // reason: a GitHub OAuth App only supports one callback URL, so previews
+  // can't share production's — steer those to the token too.
   const host = location.hostname;
   const isLocal =
     /^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[?::1\]?)$/.test(host) ||
-    host.endsWith(".local");
+    host.endsWith(".local") ||
+    host.endsWith(".pages.dev");
   return html`<div
     class="crop-overlay"
     onClick=${(e) => {
