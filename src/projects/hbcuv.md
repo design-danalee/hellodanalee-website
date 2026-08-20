@@ -37,7 +37,7 @@ sections:
       - type: image_half
         src: assets/HBCUv_06.jpg
       - type: text_half
-        text: The visual heart of our brand is a photography direction that is both celebratory and deeply authentic. By using full color imagery, we hero the students in all walks of life, from their roles within their families to their triumphs at graduation and their first steps into professional careers. This strategic choice ensures our brand's story is told with vibrancy, honoring the very people it is designed to empower and support.
+        text: The visual heart of our brand is a photography direction that is both celebratory and deeply authentic. By using full-color imagery, we hero the students in all walks of life, from their roles within their families to their triumphs at graduation and their first steps into professional careers. This strategic choice ensures our brand's story is told with vibrancy, honoring the very people it is designed to empower and support.
       - type: video_half
         src: assets/HBCUv_07.mov
       - type: video_full
