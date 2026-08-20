@@ -5,3 +5,4 @@ _site/
 # Never commit archives (they can smuggle secrets — see contact-form-upload.zip
 # removed 2026-07-11; it contained a real smtp-config.php with live credentials)
 *.zip
+.wrangler/
