@@ -243,6 +243,14 @@ a:hover{
     animation-timeline: view();
     animation-iteration-count: 1;
 }
+    /* Images set to "cover" fit (via the CMS's fit option) skip the grow
+       animation — animating between the "cover" keyword and a vw length
+       isn't smoothly interpolable, which caused an abrupt jump/snap on
+       scroll instead of a smooth zoom. */
+    .project-image[class*="bg-cover"] {
+        animation: none;
+        background-size: cover;
+    }
     @keyframes project-image-grow {
         to {
             background-size: 108vw;
