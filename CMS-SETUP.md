@@ -112,11 +112,14 @@ Every save is one commit to `main`, which triggers the rebuild + deploy (a coupl
 
 ## Deploy notes
 
-- Hosting is **Cloudflare Pages**, connected directly to this GitHub repo via its
-  native Git integration — every push to `main` triggers a build (`npm run build`)
-  and deploy automatically. There's no FTP, no deploy workflow, and no server-only
-  files to keep in sync: `functions/oauth/` ships as part of the repo and Cloudflare
-  runs it directly.
+- Hosting is **Cloudflare Pages**. Cloudflare's own "Connect to Git" dashboard
+  integration wouldn't complete for this account, so `.github/workflows/deploy.yml`
+  triggers deploys instead — on every push to `main`, it builds (`npm run build`)
+  and runs `wrangler pages deploy` via the official `cloudflare/wrangler-action`.
+  Needs one repo secret: `CLOUDFLARE_API_TOKEN` (a Cloudflare API token scoped to
+  "Cloudflare Pages: Edit" — created under Cloudflare dashboard → My Profile →
+  API Tokens). There's no FTP, and no server-only files to keep in sync:
+  `functions/oauth/` ships as part of the repo and Cloudflare runs it directly.
 - `.github/workflows/ci.yml` is just a build-sanity check on pull requests — it
   doesn't deploy anything.
 - Secrets (`GH_OAUTH_CLIENT_ID`, `GH_OAUTH_CLIENT_SECRET`) live in the Cloudflare

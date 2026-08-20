@@ -1,0 +1,21 @@
+{
+  "routes": [
+    {
+      "routePath": "/oauth/auth",
+      "mountPath": "/oauth",
+      "method": "GET",
+      "module": [
+        "oauth/auth.js:onRequestGet"
+      ]
+    },
+    {
+      "routePath": "/oauth/callback",
+      "mountPath": "/oauth",
+      "method": "GET",
+      "module": [
+        "oauth/callback.js:onRequestGet"
+      ]
+    }
+  ],
+  "baseURL": "/"
+}

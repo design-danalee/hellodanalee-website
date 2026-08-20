@@ -459,14 +459,20 @@ function LoginModal({ onOAuth, onToken, onClose }) {
   // GitHub sign-in needs the OAuth proxy Functions, which only run on hosts
   // Cloudflare actually serves. On localhost the dev server can't run them
   // (the popup would just 404), so hide that button here and steer to the
-  // token. *.pages.dev preview deploys hit the same limit for a different
-  // reason: a GitHub OAuth App only supports one callback URL, so previews
-  // can't share production's — steer those to the token too.
+  // token. Cloudflare's per-deploy preview URLs (a random hash in front, e.g.
+  // 932f643e.hellodanalee-website.pages.dev) hit a different limit: a GitHub
+  // OAuth App only supports one callback URL, and that hash changes on every
+  // deploy, so those can't have a stable OAuth App pointed at them — steer
+  // those to the token too. The project's own stable alias
+  // (hellodanalee-website.pages.dev, no hash) is NOT a preview URL and can
+  // have a real OAuth App, same as any other host.
   const host = location.hostname;
+  const isEphemeralPreview =
+    host.endsWith(".pages.dev") && host.split(".").length > 3;
   const isLocal =
     /^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[?::1\]?)$/.test(host) ||
     host.endsWith(".local") ||
-    host.endsWith(".pages.dev");
+    isEphemeralPreview;
   return html`<div
     class="crop-overlay"
     onClick=${(e) => {

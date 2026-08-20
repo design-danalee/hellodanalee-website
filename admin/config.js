@@ -4,8 +4,12 @@ export const CONFIG = {
   owner: "design-danalee",
   repo: "hellodanalee-website",
   branch: "main",
-  // Assets are published at the live site root, so display them from there.
-  siteOrigin: "https://hellodanalee.com",
+  // Assets are published at the same origin the CMS runs on — no hardcoded
+  // domain, so this works correctly whether you're testing on a Cloudflare
+  // preview address or on the real live domain.
+  get siteOrigin() {
+    return location.origin;
+  },
   // Where uploaded media is committed in the repo.
   mediaDir: "assets",
   // OAuth proxy endpoint (Cloudflare Pages Function), served from the same origin.

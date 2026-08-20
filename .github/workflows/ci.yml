@@ -1,7 +1,6 @@
 name: Build check
 
-# Actual deploys are handled by Cloudflare Pages' own GitHub integration
-# (connected in the Cloudflare dashboard) — this workflow is just a
+# Actual deploys happen in deploy.yml (push to main). This workflow is just a
 # build-sanity check on pull requests, with no secrets and no deploy step.
 
 on:

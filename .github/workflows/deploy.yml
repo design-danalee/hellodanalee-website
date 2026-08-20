@@ -1,0 +1,31 @@
+name: Deploy to Cloudflare Pages
+
+# Cloudflare's own "Connect to Git" dashboard integration wouldn't complete
+# for this account, so deploys are triggered here instead, using the same
+# `wrangler pages deploy` command that was run manually to get the project
+# started. Needs one repo secret: CLOUDFLARE_API_TOKEN (see CMS-SETUP.md).
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: "292683e638f285d1158d07585335d1fe"
+          command: pages deploy _site --project-name=hellodanalee-website
