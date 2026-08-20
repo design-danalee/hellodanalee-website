@@ -51,7 +51,7 @@ sections:
       - type: image_half
         src: assets/HBCUv_11.jpg
       - type: image_half
-        src: assets/hbcuv-05.jpg
+        src: assets/hbcuv-12.jpg
         fit: md:bg-cover
   - heading: HBCUv.org
     body: The HBCUv.org microsite serves as the initial touchpoint for prospective HBCUv students, offering them a first glimpse into the online course offerings and the overall experience. Designed to captivate and engage, the microsite needed to appeal to students by effectively communicating the future-vision, professionalism, and uniqueness of this innovative digital platform. Through a visually compelling and user-friendly interface, the microsite ensures that students can easily determine if HBCUv is the right fit for their educational journey.
