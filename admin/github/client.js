@@ -12,6 +12,7 @@ export function makeClient(getToken) {
       headers["Content-Type"] = "application/json";
     }
     const res = await fetch("https://api.github.com" + path, {
+      cache: "no-store",
       ...opts,
       headers,
     });
