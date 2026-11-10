@@ -114,6 +114,7 @@ a:hover{
         font-size: 4.2rem;
         line-height: 94%;
         letter-spacing: -0.015em;
+        font-feature-settings: "ss09";
     }
     .sticky-title {
         position: -webkit-sticky;
